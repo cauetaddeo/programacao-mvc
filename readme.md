@@ -1,83 +1,65 @@
-# Boilerplate MVC em Node.js com PostgreSQL
+### Aula 5 programação:
 
-Este projeto é um boilerplate básico para uma aplicação Node.js seguindo o padrão MVC (Model-View-Controller), utilizando PostgreSQL como banco de dados.
 
-## Requisitos
+### Models 
+Os models são responsáveis por representar os dados da aplicação e interagir com o banco de dados.  
+Por exemplo, o model Aluno pode ter funções para criar, buscar, atualizar ou excluir registros de alunos no banco de dados.
 
-- Node.js (versão X.X.X)
-- PostgreSQL (versão X.X.X)
+### Controllers 
+Os controllers atuam como intermediários entre o que o usuário faz e o processamento dos dados.  
+Quando um usuário envia uma solicitação, como preencher um formulário, o controller recebe essa informação, consulta ou altera os dados com os models e, em seguida, envia uma resposta, como renderizar uma página ou retornar uma mensagem.
 
-## Instalação
+### Endpoints 
+Os endpoints representam as URLs da aplicação que o usuário acessa.  
+Cada URL corresponde a uma rota específica, como `/alunos`, `/cursos` ou `/login`.  
+Cada rota está associada a um controller e geralmente responde a diferentes métodos HTTP, como `GET` (para buscar dados), `POST` (para enviar dados), `PUT` (para atualizar dados) ou `DELETE` (para remover dados).
 
-1. **Clonar o repositório:**
+# Aula 6 programação:
 
-```bash
-   git clone https://github.com/seu-usuario/seu-projeto.git
-   cd seu-projeto
+### Arquitetura MVC
+O projeto usa a arquitetura MVC, que divide o código em três partes:
+
+Model (Modelo): Cuida dos dados e do banco de dados. No cadastro de alunos, o Model guarda informações como nome, idade e matrícula dos alunos. Também é quem salva, busca, atualiza ou apaga esses dados no banco.
+
+View (Visão): É a parte que mostra as informações na tela. São as páginas HTML que têm formulários para cadastrar alunos e tabelas que mostram a lista de alunos.
+
+Controller (Controlador): Liga tudo. O Controller recebe os pedidos do usuário, pega ou salva informações no Model e depois escolhe qual página (View) vai ser mostrada ou se a resposta será em JSON.
+
+### Como eles se comunicam
+Quando o usuário faz alguma ação (como cadastrar um aluno ou abrir a lista), quem recebe é o Controller. O Controller conversa com o Model para buscar ou salvar os dados. Depois, ele manda os dados para a View, que monta a página para o usuário ver.
+
+O caminho funciona assim:
+Usuário → Controller → Model → Controller → View
+
+### Envio e recebimento de dados JSON:
+O projeto também tem rotas que trabalham com JSON, que é um jeito simples de enviar e receber dados, sem precisar de uma página HTML.
+
+### Exemplo de rota que responde em JSON:
 ```
-
-2. **Instalar as dependências:**
-    
-```bash
-npm install
+javascript
+Copiar
+Editar
+app.get('/api/alunos', (req, res) => {
+    Aluno.findAll()
+        .then(alunos => res.json(alunos));
+}); 
 ```
-    
-3. **Configurar o arquivo `.env`:**
-    
-Renomeie o arquivo `.env.example` para `.env` e configure as variáveis de ambiente necessárias, como as configurações do banco de dados PostgreSQL.
-    
+Essa rota pega todos os alunos do banco de dados e responde em JSON. Ela é usada para quem quer os dados de alunos direto, como em uma API ou integração com outro sistema.
 
-Configuração do Banco de Dados
-------------------------------
+### Por que usar HTML:
+Mesmo com JSON e API, usar HTML com formulários e tabelas é importante porque:
 
-1. **Criar banco de dados:**
-    
-    Crie um banco de dados PostgreSQL com o nome especificado no seu arquivo `.env`.
-    
-2. **Executar o script SQL de inicialização:**
-    
-```bash
-npm run init-db
-```
-    
-Isso criará a tabela `users` no seu banco de dados PostgreSQL com UUID como chave primária e inserirá alguns registros de exemplo.
-    
+1- Permite que o usuário cadastre e veja os alunos direto pelo navegador.
 
-Funcionalidades
----------------
+2- Os formulários servem para enviar informações (como nome, idade, matrícula).
 
-* **Padrão MVC:** Estrutura organizada em Model, View e Controller.
-* **PostgreSQL:** Banco de dados relacional utilizado para persistência dos dados.
-* **UUID:** Utilização de UUID como chave primária na tabela `users`.
-* **Scripts com `nodemon`:** Utilização do `nodemon` para reiniciar automaticamente o servidor após alterações no código.
-* **Testes:** Inclui estrutura básica para testes automatizados.
+3- As tabelas ajudam a mostrar os alunos de forma organizada e fácil de entender.
 
-Scripts Disponíveis
--------------------
+### Por que isso ainda é útil no back-end:
+Ter páginas simples em HTML no próprio back-end com Node.js é útil porque:
 
-* `npm start`: Inicia o servidor Node.js.
-* `npm run dev`: Inicia o servidor com `nodemon`, reiniciando automaticamente após alterações no código.
-* `npm run test`: Executa os testes automatizados.
-* `npm run test:coverage`: Executa os testes e gera um relatório de cobertura de código.
+1- É mais rápido e fácil de fazer.
 
-Estrutura de Diretórios
------------------------
+2- Não precisa de outro sistema para o front-end.
 
-* **`config/`**: Configurações do banco de dados e outras configurações do projeto.
-* **`controllers/`**: Controladores da aplicação (lógica de negócio).
-* **`models/`**: Modelos da aplicação (definições de dados e interações com o banco de dados).
-* **`routes/`**: Rotas da aplicação.
-* **`tests/`**: Testes automatizados.
-* **`views/`**: Views da aplicação (se aplicável).
-
-Contribuição
-------------
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir um issue ou enviar um pull request.
-
-Licença
--------
-
-Este projeto está licenciado sob a Licença MIT.
-
-Este README.md fornece uma visão geral clara do boilerplate, incluindo instruções de instalação, configuração do banco de dados, funcionalidades principais, scripts disponíveis, estrutura de diretórios, como contribuir e informações de licença. Certifique-se de personalizar as seções com detalhes específicos do seu projeto conforme necessário.
+3- Serve muito bem para sistemas internos, testes e projetos mais simples.
