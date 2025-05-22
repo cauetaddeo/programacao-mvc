@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS aluno (
   criado_em TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_aluno_email ON aluno (email);
+CREATE INDEX IF NOT EXISTS idx_aluno_email ON aluno (email)
 
 CREATE TABLE IF NOT EXISTS curso (
   id SERIAL PRIMARY KEY,
